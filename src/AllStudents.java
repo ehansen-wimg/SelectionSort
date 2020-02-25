@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class AllStudents {
 	
@@ -47,13 +48,34 @@ public class AllStudents {
 	}
 	
 	public List<StudentInfo> alphSort(){
-		Arrays.sort(studentInfo, new StudentInfoNameComparator());
+		sort(studentInfo, new StudentInfoNameComparator());
 		return Arrays.asList(studentInfo); 
 	}
 	
 	public List<StudentInfo> avgSort(){
-		Arrays.sort(studentInfo, new StudentInfoFinalAverageComparator());
+		sort(studentInfo, new StudentInfoFinalAverageComparator());
 		return Arrays.asList(studentInfo);
 	}
 
+	private StudentInfo[] sort(StudentInfo[] students, Comparator<StudentInfo> comparator) {
+		
+        int n = students.length;
+        
+        // One by one move boundary of unsorted subarray
+        for (int i = 0; i < n-1; i++) {
+            // Find the minimum element in unsorted array
+            int min_idx = i;
+            for (int j = i+1; j < n; j++) {
+                if (comparator.compare(students[j], students[min_idx]) == -1 ? true : false) {
+                	min_idx = j;
+                }
+            }
+            // Swap the found minimum element with the first
+            // element
+            StudentInfo temp = students[min_idx];
+            students[min_idx] = students[i];
+            students[i] = temp;
+        }
+        return students;
+	}
 }
